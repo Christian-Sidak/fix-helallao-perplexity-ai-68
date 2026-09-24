@@ -117,7 +117,9 @@ class Client:
                     if new_msgs:
                         break
                 else:
-                    logger.warning(f"Perplexity account creation attempt failed: {resp.status_code}")
+                    logger.warning(
+                        f"Perplexity account creation attempt failed: {resp.status_code}"
+                    )
 
             except Exception as e:
                 logger.debug(f"Account creation attempt {attempts} error: {e}")
@@ -140,7 +142,9 @@ class Client:
         # Complete the account creation process
         resp = self.session.get(new_account_link)
         if not resp.ok:
-            raise AccountCreationError(f"Failed to authenticate with callback link: {resp.status_code}")
+            raise AccountCreationError(
+                f"Failed to authenticate with callback link: {resp.status_code}"
+            )
 
         # Update query and file upload limits
         self.copilot = 5
@@ -195,7 +199,9 @@ class Client:
 
         # Update query and file upload counters
         if mode in ["pro", "reasoning", "deep research"]:
-            self.copilot = max(0, self.copilot - 1) if self.copilot != float("inf") else self.copilot
+            self.copilot = (
+                max(0, self.copilot - 1) if self.copilot != float("inf") else self.copilot
+            )
         if files:
             self.file_upload = (
                 max(0, self.file_upload - len(files))
@@ -268,7 +274,9 @@ class Client:
                 "is_incognito": incognito,
                 "language": language,
                 "last_backend_uuid": (
-                    follow_up.get("backend_uuid") if follow_up and isinstance(follow_up, dict) else None
+                    follow_up.get("backend_uuid")
+                    if follow_up and isinstance(follow_up, dict)
+                    else None
                 ),
                 "mode": "concise" if mode == "auto" else "copilot",
                 "model_preference": model_pref,

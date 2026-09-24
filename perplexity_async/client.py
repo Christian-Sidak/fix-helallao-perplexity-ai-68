@@ -145,7 +145,9 @@ class Client(AsyncMixin):
 
         resp = await self.session.get(new_account_link)
         if not resp.ok:
-            raise AccountCreationError(f"Failed to authenticate with callback link: {resp.status_code}")
+            raise AccountCreationError(
+                f"Failed to authenticate with callback link: {resp.status_code}"
+            )
 
         self.copilot = 5
         self.file_upload = 10
@@ -198,7 +200,9 @@ class Client(AsyncMixin):
         )
 
         if mode in ["pro", "reasoning", "deep research"]:
-            self.copilot = max(0, self.copilot - 1) if self.copilot != float("inf") else self.copilot
+            self.copilot = (
+                max(0, self.copilot - 1) if self.copilot != float("inf") else self.copilot
+            )
         if files:
             self.file_upload = (
                 max(0, self.file_upload - len(files))
@@ -268,7 +272,9 @@ class Client(AsyncMixin):
                 "is_incognito": incognito,
                 "language": language,
                 "last_backend_uuid": (
-                    follow_up.get("backend_uuid") if follow_up and isinstance(follow_up, dict) else None
+                    follow_up.get("backend_uuid")
+                    if follow_up and isinstance(follow_up, dict)
+                    else None
                 ),
                 "mode": "concise" if mode == "auto" else "copilot",
                 "model_preference": model_pref,
