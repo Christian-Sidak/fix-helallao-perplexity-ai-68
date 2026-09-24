@@ -96,6 +96,7 @@ module = [
     "perplexity.labs",
     "perplexity.emailnator",
     "perplexity.driver",
+    "perplexity.mcp",
     "perplexity_async.labs",
     "perplexity_async.emailnator",
     "perplexity_async.client",
