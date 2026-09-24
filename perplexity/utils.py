@@ -272,8 +272,9 @@ def parse_nested_json_response(content_json: dict) -> dict:
     """
     Parse nested JSON response from Perplexity API.
 
-    Extracts answer and chunks from the nested 'text' field structure:
-    text (JSON string) -> list of steps -> FINAL step -> answer (JSON string)
+    Handles two response formats:
+    1. Legacy 'text' format: text (JSON string) -> list of steps -> FINAL step -> answer
+    2. Current 'blocks' format: blocks[].markdown_block.answer
 
     Args:
         content_json: Response JSON from API
@@ -319,5 +320,14 @@ def parse_nested_json_response(content_json: dict) -> dict:
             content_json["text"] = text_parsed
         except (json.JSONDecodeError, TypeError, KeyError):
             pass
+
+    if not content_json.get("answer") and "blocks" in content_json:
+        for block in content_json["blocks"]:
+            if not isinstance(block, dict):
+                continue
+            markdown_block = block.get("markdown_block", {})
+            if isinstance(markdown_block, dict) and markdown_block.get("answer"):
+                content_json["answer"] = markdown_block["answer"]
+                break
 
     return content_json
