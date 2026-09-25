@@ -32,6 +32,7 @@ from perplexity.utils import (
     validate_query_limits,
     validate_search_params,
 )
+
 from .emailnator import Emailnator
 
 logger = get_logger("async_client")
